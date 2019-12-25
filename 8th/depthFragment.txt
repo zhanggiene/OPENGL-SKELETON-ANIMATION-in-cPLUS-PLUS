@@ -1,0 +1,15 @@
+//
+//  depthFragment.h
+//  8th
+//
+//  Created by Zhang Zhuyan on 5/8/19.
+//  Copyright © 2019 Zhang Zhuyan. All rights reserved.
+//
+
+#version 330 core
+
+layout(location = 0) out float fragmentdepth;
+void main()
+{
+    fragmentdepth = gl_FragCoord.z;
+}  

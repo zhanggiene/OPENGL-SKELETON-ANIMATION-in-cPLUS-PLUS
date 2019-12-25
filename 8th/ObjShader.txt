@@ -1,0 +1,39 @@
+/* 
+  vertexShader.strings
+  second
+
+  Created by Zhang Zhuyan on 16/6/19.
+  Copyright © 2019 Zhang Zhuyan. All rights reserved.
+*/
+
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 anormal;
+layout (location = 2) in ivec4 BoneIDs;
+layout (location = 3) in vec4 Weight;//       
+const int MAX_BONES = 100;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+uniform mat4 finalTransform[MAX_BONES];
+out vec3 FragPos;
+out vec3 Normal;
+out mat4 RandMatrix;
+out vec3 test;
+void main()
+{
+    mat4 BoneTransform = finalTransform[BoneIDs[0]] * Weight[0];
+    BoneTransform += finalTransform[BoneIDs[1]] * Weight[1];
+    BoneTransform += finalTransform[BoneIDs[2]] * Weight[2];
+   BoneTransform += finalTransform[BoneIDs[3]] * Weight[3];
+    
+   gl_Position = projection * view *model *BoneTransform *vec4(aPos.x,aPos.y,aPos.z, 1.0);
+   // gl_Position = projection * view *model*BoneTransform *vec4(aPos.x,aPos.y,aPos.z, 1.0);
+    //RandMatrix=BoneTransform;
+   //test=vec3(BoneIDs[0]/6,0,0);
+    //test=vec3(Weight[0],Weight[1],Weight[3]);
+    FragPos = vec3(model * BoneTransform* vec4(aPos, 1.0));// it is the world position of one point in object.
+    Normal=mat3(transpose(inverse(model* BoneTransform)))*anormal;
+    //Normal=anormal;
+}

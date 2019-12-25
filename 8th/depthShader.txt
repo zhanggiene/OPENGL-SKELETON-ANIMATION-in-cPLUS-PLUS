@@ -1,0 +1,27 @@
+//
+//  depthShader.h
+//  8th
+//
+//  Created by Zhang Zhuyan on 5/8/19.
+//  Copyright © 2019 Zhang Zhuyan. All rights reserved.
+//
+
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in ivec4 BoneIDs;
+layout (location = 2) in vec4 Weight;//
+
+uniform mat4 lightSpaceMatrix;
+uniform mat4 model;
+
+
+void main()
+{
+    
+    mat4 BoneTransform = finalTransform[BoneIDs[0]] * Weight[0];
+    BoneTransform += finalTransform[BoneIDs[1]] * Weight[1];
+    BoneTransform += finalTransform[BoneIDs[2]] * Weight[2];
+    BoneTransform += finalTransform[BoneIDs[3]] * Weight[3];
+    gl_Position = lightSpaceMatrix * model *BoneTransform* vec4(aPos, 1.0);
+    
+}
